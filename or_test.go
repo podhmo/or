@@ -21,6 +21,13 @@ func GetDB(name string) (*DB, error) {
 	return &DB{Name: name}, nil
 }
 
+func GetDBWithCleanup(name string) (*DB, func(), error) {
+	if name == emptyString {
+		return nil, nil, errEmptyString
+	}
+	return &DB{Name: name}, func() {}, nil
+}
+
 type FakeTB struct {
 	testing.TB
 
@@ -38,8 +45,8 @@ func (tb *FakeTB) Fatalf(fmt string, args ...interface{}) {
 func TestFatal(t *testing.T) {
 	t.Run("ok", func(t *testing.T) {
 		got := or.Fatal(GetDB("foo"))(t) // ok
-		want := &DB{Name: "foo"}
 
+		want := &DB{Name: "foo"}
 		if want, got := want.Name, got.Name; want != got {
 			t.Errorf("Fatal(), DB.Name want=%q but got=%q", want, got)
 		}
@@ -57,6 +64,18 @@ func TestFatal(t *testing.T) {
 		got := fmt.Sprintf(fake.fmt, fake.args...)
 		if want != got {
 			t.Errorf("Fatal(), error message is want=%q but got=%q", want, got)
+		}
+	})
+}
+
+func TestFatalWithCleanup(t *testing.T) {
+	t.Run("ok", func(t *testing.T) {
+		got, cleanup := or.FatalWithCleanup(GetDBWithCleanup("foo"))(t) // ok
+		defer cleanup()
+
+		want := &DB{Name: "foo"}
+		if want, got := want.Name, got.Name; want != got {
+			t.Errorf("Fatal(), DB.Name want=%q but got=%q", want, got)
 		}
 	})
 }

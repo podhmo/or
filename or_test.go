@@ -22,7 +22,7 @@ func GetDB(name string) (*DB, error) {
 }
 
 type FakeTB struct {
-	*testing.T
+	testing.TB
 
 	fmt    string
 	args   []interface{}
@@ -46,7 +46,7 @@ func TestFatal(t *testing.T) {
 	})
 
 	t.Run("ng", func(t *testing.T) {
-		fake := &FakeTB{T: t}
+		fake := &FakeTB{TB: t}
 		_ = or.Fatal(GetDB(emptyString))(fake) // ng
 
 		if !fake.called {

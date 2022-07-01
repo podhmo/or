@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/podhmo/or"
 )
 
@@ -23,8 +22,8 @@ func TestFatal(t *testing.T) {
 	t.Run("ok", func(t *testing.T) {
 		got := or.Fatal(GetDB("foo"))(t)
 		want := &DB{Name: "foo"}
-		if diff := cmp.Diff(want, got); diff != "" {
-			t.Errorf("Fatal() mismatch (-want +got):\n%s", diff)
+		if want, got := want.Name, got.Name; want != got {
+			t.Errorf("Fatal() DB.Name want=%q but got=%q", want, got)
 		}
 	})
 }

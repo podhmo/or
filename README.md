@@ -46,7 +46,7 @@ $ go test
 
 ### why not `or.Fatal(t, getFoo()` ?
 
-Because two reasons.
+There are two reasons.
 
-- for go's multiple values specification
-- for go's generics specification
+- go's multiple values specification
+- go's generics specification

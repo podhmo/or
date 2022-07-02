@@ -1,4 +1,4 @@
-package or_test
+package main
 
 import (
 	"fmt"

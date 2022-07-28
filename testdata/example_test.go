@@ -28,8 +28,7 @@ func TestFatal(t *testing.T) {
 
 func TestFatalWithCleanup(t *testing.T) {
 	foo := or.Fatal(getFoo())(t)
-	boo, cleanup := or.FatalWithCleanup(getBoo(foo))(t)
-	defer cleanup()
+	boo := or.FatalWithCleanup(getBoo(foo))(t)
 
 	_ = boo // doSomething
 }

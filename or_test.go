@@ -70,8 +70,7 @@ func TestFatal(t *testing.T) {
 
 func TestFatalWithCleanup(t *testing.T) {
 	t.Run("ok", func(t *testing.T) {
-		got, cleanup := or.FatalWithCleanup(GetDBWithCleanup("foo"))(t) // ok
-		defer cleanup()
+		got := or.FatalWithCleanup(GetDBWithCleanup("foo"))(t) // ok
 
 		want := &DB{Name: "foo"}
 		if want, got := want.Name, got.Name; want != got {
